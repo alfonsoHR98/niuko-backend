@@ -11,7 +11,6 @@ import Office from "../../model/administration/office.model.js";
 import Area from "../../model/administration/area.model.js";
 import Salary from "../../model/administration/salary.model.js";
 import Employment from "../../model/administration/employment.model.js";
-import moment from "moment-timezone";
 
 // FUNCIONES DE USUARIOS
 export const createUser = async (req, res, next) => {

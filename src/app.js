@@ -53,6 +53,7 @@ const app = express();
 
 app.use(
   cors({
+    
     origin: ORIGIN,
     credentials: true,
   })
