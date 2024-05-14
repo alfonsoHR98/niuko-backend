@@ -280,7 +280,7 @@ export const signin = async (req, res, next) => {
     });
 
     res.cookie("token", token, {
-      secure,
+      secure: true,
       SameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
