@@ -1,7 +1,7 @@
 import bcrypy from "bcrypt";
 import { createAccessToken } from "../../libs/jwt.js";
 import jwt from "jsonwebtoken";
-import { TOKEN_SECRET, ORIGIN } from "../../config.js";
+import { TOKEN_SECRET } from "../../config.js";
 import User from "../../model/users/user.model.js";
 import UserInfo from "../../model/users/userInfo.model.js";
 import Address from "../../model/users/address.model.js";
@@ -281,7 +281,7 @@ export const signin = async (req, res, next) => {
     res.cookie("token", token, {
       //httpOnly: true,
       secure: true,
-      sameSite: "Lax",
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
