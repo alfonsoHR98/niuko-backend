@@ -272,21 +272,7 @@ export const signin = async (req, res, next) => {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
-    const token = await createAccessToken({
-      id: user.id,
-      role: user.role,
-      username: user.username,
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      path: "/",
-    });
-
-    return res.json({ message: "Sesión iniciada", data: user });
+    return res.json(user);
   } catch (error) {
     next(error);
     console.log(error);
@@ -299,19 +285,90 @@ export const signout = async (req, res, next) => {
 };
 
 export const profile = async (req, res, next) => {
-  const { token } = req.cookies;
-  if (!token) {
-    return res.status(401).json({ message: "Token not provided" });
-  }
+  const { id } = req.params;
+
   try {
-    const payload = jwt.verify(token, TOKEN_SECRET);
-    return res.json({
-      id: payload.id,
-      role: payload.role,
-      username: payload.username,
+    const user = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password", "username", "createdAt", "updatedAt"],
+      },
+      include: [
+        {
+          model: UserInfo,
+          attributes: {
+            exclude: [
+              "idUser",
+              "createdAt",
+              "updatedAt",
+              "idInsurance",
+              "idAddress",
+              "idAdministration",
+            ],
+          },
+          include: [
+            {
+              model: Address,
+              attributes: {
+                exclude: ["idUser", "createdAt", "updatedAt"],
+              },
+            },
+            {
+              model: Insurance,
+              attributes: {
+                exclude: ["idUser", "createdAt", "updatedAt"],
+              },
+            },
+            {
+              model: UserAdministration,
+              attributes: {
+                exclude: [
+                  "idEmployment",
+                  "idSalary",
+                  "idUser",
+                  "createdAt",
+                  "updatedAt",
+                  "idOffice",
+                  "idArea",
+                ],
+              },
+              include: [
+                {
+                  model: Office,
+                  attributes: {
+                    exclude: ["idArea", "createdAt", "updatedAt"],
+                  },
+                },
+                {
+                  model: Area,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                  },
+                },
+                {
+                  model: Salary,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                  },
+                },
+                {
+                  model: Employment,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    return res.json(user);
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({ message: "No autorizado" });
+    next(error);
   }
 };
