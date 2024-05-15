@@ -285,10 +285,13 @@ export const signout = async (req, res, next) => {
 };
 
 export const profile = async (req, res, next) => {
-  const { id } = req.params;
+  const { email } = req.body;
 
   try {
-    const user = await User.findByPk(id, {
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
       attributes: {
         exclude: ["password", "username", "createdAt", "updatedAt"],
       },
@@ -366,6 +369,7 @@ export const profile = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
+    console.log(user);
 
     return res.json(user);
   } catch (error) {
