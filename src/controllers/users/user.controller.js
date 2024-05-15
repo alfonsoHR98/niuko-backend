@@ -279,10 +279,11 @@ export const signin = async (req, res, next) => {
     });
 
     res.cookie("token", token, {
-      //httpOnly: true,
+      httpOnly: true,
       secure: true,
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      path: "/",
     });
 
     return res.json({ message: "Sesión iniciada", data: user });
@@ -299,6 +300,9 @@ export const signout = async (req, res, next) => {
 
 export const profile = async (req, res, next) => {
   const { token } = req.cookies;
+  if (!token) {
+    return res.status(401).json({ message: "Token not provided" });
+  }
   try {
     const payload = jwt.verify(token, TOKEN_SECRET);
     return res.json({
