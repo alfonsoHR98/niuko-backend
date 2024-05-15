@@ -15,7 +15,7 @@ const Office = sequelize.define(
       allowNull: false,
     },
     abreviation: {
-      type: DataTypes.ENUM("SLP", "AGS", "QRO"),
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
