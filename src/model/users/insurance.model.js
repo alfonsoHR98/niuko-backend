@@ -13,7 +13,6 @@ const Insurance = sequelize.define(
     num: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     beneficiary: {
       type: DataTypes.STRING,

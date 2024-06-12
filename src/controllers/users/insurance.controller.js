@@ -28,16 +28,6 @@ export const getInsurance = async (req, res, next) => {
 export const createInsurance = async (req, res, next) => {
   const { num, beneficiary } = req.body;
 
-  // Busca un registro existente con el mismo num
-  const existingInsurance = await Insurance.findOne({ where: { num } });
-
-  // Si existe un registro con el mismo num, envía un error
-  if (existingInsurance) {
-    return res
-      .status(400)
-      .json({ message: "Insurance with this num already exists." });
-  }
-
   // Si no existe un registro con el mismo num, crea uno nuevo
   const insurance = await Insurance.create({ num, beneficiary });
 

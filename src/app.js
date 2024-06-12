@@ -36,6 +36,7 @@ import evaluationRoutes from "./routes/evaluation/evaluation.routes.js";
 import evaluationUserRoutes from "./routes/evaluation/evaluation-user.routes.js";
 import evaluationManagerUserRoutes from "./routes/evaluation/evaluation-manager-user.routes.js";
 import evaluationResultRoutes from "./routes/evaluation/evaluation-result.routes.js";
+import evaluationRejectRoutes from "./routes/evaluation/evaluation-reject.routes.js";
 
 import { ORIGIN } from "./config.js";
 
@@ -97,6 +98,7 @@ app.use("/api", evaluationRoutes);
 app.use("/api", evaluationUserRoutes);
 app.use("/api", evaluationManagerUserRoutes);
 app.use("/api", evaluationResultRoutes);
+app.use("/api", evaluationRejectRoutes);
 
 app.use((err, req, res, next) => {
   res.status(500).json({

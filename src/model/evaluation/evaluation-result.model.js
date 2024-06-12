@@ -3,6 +3,7 @@ import { sequelize } from "../../db.js";
 import EvaluationManagerUser from "./evaluation-manager-user.model.js";
 import EvaluationUser from "./evaluation-user.model.js";
 import Evaluation from "./evaluation.model.js";
+import EvaluationReject from "./evaluation-reject.model.js";
 
 const EvaluationResult = sequelize.define(
   "EvaluationResult",
@@ -25,6 +26,10 @@ const EvaluationResult = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    idEvaluationReject: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
     state: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -33,6 +38,10 @@ const EvaluationResult = sequelize.define(
   },
   {}
 );
+
+//Relacion uno a uno EvaluationResult to EvaluationReject
+EvaluationReject.hasOne(EvaluationResult, { foreignKey: "idEvaluationReject" });
+EvaluationResult.belongsTo(EvaluationReject, { foreignKey: "idEvaluationReject" });
 
 //Relacion uno a uno EvaluationUser to EvaluationResult
 EvaluationUser.hasOne(EvaluationResult, { foreignKey: "idEvaluationUser" });

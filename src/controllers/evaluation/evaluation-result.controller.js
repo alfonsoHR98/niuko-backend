@@ -2,6 +2,7 @@ import EvaluationResult from "../../model/evaluation/evaluation-result.model.js"
 import Evaluation from "../../model/evaluation/evaluation.model.js";
 import EvaluationUser from "../../model/evaluation/evaluation-user.model.js";
 import EvaluationManagerUser from "../../model/evaluation/evaluation-manager-user.model.js";
+import EvaluationReject from "../../model/evaluation/evaluation-reject.model.js";
 import User from "../../model/users/user.model.js";
 import UserAdministration from "../../model/administration/userAdministration.model.js";
 import UserInfo from "../../model/users/userInfo.model.js";
@@ -57,6 +58,10 @@ export const getEvaluationResults = async (req, res, next) => {
           model: Evaluation,
           attributes: { exclude: ["createdAt", "updatedAt"] },
         },
+        {
+          model: EvaluationReject,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
       ],
     });
     return res.status(200).json(evaluationResults);
@@ -93,6 +98,10 @@ export const getEvaluationResult = async (req, res, next) => {
         },
         {
           model: Evaluation,
+          attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+        {
+          model: EvaluationReject,
           attributes: { exclude: ["createdAt", "updatedAt"] },
         },
       ],
