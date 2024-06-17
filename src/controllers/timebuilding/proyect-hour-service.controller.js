@@ -7,6 +7,7 @@ import UserInfo from "../../model/users/userInfo.model.js";
 import Area from "../../model/administration/area.model.js";
 import Employment from "../../model/administration/employment.model.js";
 import UserAdministration from "../../model/administration/userAdministration.model.js";
+import Activity from "../../model/timebuilding/activity.model.js";
 import { Op } from "sequelize";
 
 export const getProyectHourService = async (req, res) => {
@@ -34,6 +35,12 @@ export const getProyectHourService = async (req, res) => {
             attributes: { exclude: ["createdAt", "updatedAt"] },
           },
         ],
+      },
+      {
+        model: Activity,
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
       },
       {
         model: User,
@@ -95,7 +102,7 @@ export const getProyectHourServiceByIdUser = async (req, res, next) => {
 
 // crear ProyectHourService
 export const createProyectHourService = async (req, res, next) => {
-  const { idProyectService, idUser, date, hours, description } = req.body;
+  const { idProyectService, idUser, date, hours, description, idActivity } = req.body;
 
   try {
     const newProyectHourService = await ProyectHourService.create({
@@ -104,6 +111,7 @@ export const createProyectHourService = async (req, res, next) => {
       date,
       hours,
       description,
+      idActivity,
     });
     return res.json({
       message: "Relacion Proyecto - Servicio - Usuario creada",

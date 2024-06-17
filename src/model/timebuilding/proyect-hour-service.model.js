@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../db.js";
 import ProyectService from "./proyect-service.model.js";
+import Activity from "./activity.model.js";
 import User from "../users/user.model.js";
 
 const ProyectHourService = sequelize.define(
@@ -20,6 +21,10 @@ const ProyectHourService = sequelize.define(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    idActivity: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
     date: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -35,6 +40,16 @@ const ProyectHourService = sequelize.define(
   },
   {}
 );
+
+// Relacion ProyectHourService - Activity
+ProyectHourService.belongsTo(Activity, {
+  foreignKey: "idActivity",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+Activity.hasMany(ProyectHourService, {
+  foreignKey: "idActivity",
+});
 
 // Relacion ProyectHourService - ProyectService
 ProyectHourService.belongsTo(ProyectService, {

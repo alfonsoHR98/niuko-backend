@@ -11,6 +11,7 @@ import insuranceRoutes from "./routes/users/insurance.routes.js";
 import userInfoRoutes from "./routes/users/userInfo.routes.js";
 
 // TIMEBUILDING ROUTES
+import activityRoutes from "./routes/timebuilding/activity.routes.js";
 import costCenterRoutes from "./routes/timebuilding/costCenter.routes.js";
 import serviceRoutes from "./routes/timebuilding/service.routes.js";
 import customerRoutes from "./routes/timebuilding/customer.routes.js";
@@ -80,6 +81,7 @@ app.use("/api", employmentRoutes);
 app.use("/api", userAdministrationRoutes);
 
 // TIMEBUILDING ROUTES
+app.use("/api", activityRoutes);
 app.use("/api", costCenterRoutes);
 app.use("/api", serviceRoutes);
 app.use("/api", customerRoutes);
