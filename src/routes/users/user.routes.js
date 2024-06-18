@@ -5,6 +5,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
+  changePassword,
   signin,
   signout,
   profile
@@ -22,6 +23,8 @@ router.post("/users", createUser)
 router.put("/users/:id", updateUser)
 
 router.delete("/users/:id", deleteUser)
+
+router.put("/users/:id/changePassword", changePassword)
 
 //Rutas de autenticación
 

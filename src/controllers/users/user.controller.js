@@ -256,6 +256,35 @@ export const deleteUser = async (req, res, next) => {
   return res.sendStatus(204);
 };
 
+// Funcion para cambio de contraseña
+export const changePassword = async (req, res, next) => {
+  const { id } = req.params;
+  const { password, newPassword } = req.body;
+
+  try {
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const isValid = await bcrypy.compare(password, user.password);
+
+    if (!isValid) {
+      return res.status(401).json({ message: "Contraseña incorrecta" });
+    }
+
+    const hashedPassword = await bcrypy.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ message: "Contraseña actualizada" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // FUNCIONES DE AUTENTICACIÓN
 export const signin = async (req, res, next) => {
   const { username, password } = req.body;
