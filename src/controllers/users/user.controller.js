@@ -285,6 +285,47 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
+// Funcion contraseña olvidada
+export const forgotPassword = async (req, res, next) => {
+  const { rfc, username, curp } = req.body;
+
+  try {
+    const user = await User.findOne({
+      where: { rfc: rfc, username: username, curp: curp },
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Datos no coinciden con ningún usuario" });
+    }
+
+    function generateNewPassword() {
+      const length = 25;
+      const charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}[]|;:<>?";
+      let newPassword = "";
+      for (let i = 0; i < length; i++) {
+        newPassword += charset.charAt(
+          Math.floor(Math.random() * charset.length)
+        );
+      }
+      return newPassword;
+    }
+
+    const newPassword = generateNewPassword();
+
+    const hashedPassword = await bcrypy.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ newPassword: newPassword, name: user.firstName });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // FUNCIONES DE AUTENTICACIÓN
 export const signin = async (req, res, next) => {
   const { username, password } = req.body;
